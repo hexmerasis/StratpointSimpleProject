@@ -45,7 +45,7 @@ public class ProfileServlet extends HttpServlet implements Servlet {
 			try {
 				json = readJsonFromUrl("http://s3-ap-southeast-1.amazonaws.com/fundo/js/profiles.json");
 			} catch (IOException e) {
-				error = "Something went wrong in connecting with the API.\n "
+				error = "Something went wrong in connecting with the API.<br>"
 						+ "Please reload the page!";
 				e.printStackTrace();	
 			}finally{
