@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,24 +31,34 @@ public class ProfileServlet extends HttpServlet implements Servlet {
  * parameter is not available, initiate 'readJsonFromURL' that reads 
  * all the data from profile list JSON API url, this method also sets
  * request and response attribute that contains the data that will be 
- * passed to the dispatch page.
+ * passed to the dispatch page. 
+ * The page also create a error message to be displayed in the page if
+ * an error occur fetching datas from the JSON API.
  */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String page = "/home.jsp";
 		String action = request.getParameter("action");
 		action = action == null ? "" : request.getParameter("action");
 		if(action.equals("viewProfile")) page = "/core/pages/profile.jsp";
+		String error ="";
 		JSONArray json = null;
 			try {
 				json = readJsonFromUrl("http://s3-ap-southeast-1.amazonaws.com/fundo/js/profiles.json");
 			} catch (IOException e) {
-				
-				e.printStackTrace();
+				error = "Something went wrong in connecting with the API.\n "
+						+ "Please reload the page!";
+				e.printStackTrace();	
+			}finally{
+				request.setAttribute("SystemError", error);
+				if(error.equals("")){
+					request.setAttribute("message", json.toString());
+					request.setAttribute("id", request.getParameter("id"));
+				}
+				RequestDispatcher rd = request.getRequestDispatcher(page);
+				rd.forward(request, response);
 			}
-		    request.setAttribute("message", json.toString());
-		    request.setAttribute("id", request.getParameter("id"));
-		getServletContext().getRequestDispatcher(page).forward(request, response);
-	}		
+	}
+	
 /**METHOD: readJsonFromUrl
  * This method accepts a String type parameter(the URL) 
  * and read all the data from the list JSON API into a 
@@ -65,6 +76,7 @@ public class ProfileServlet extends HttpServlet implements Servlet {
 			is.close();
 		}
 	}
+	
 /**METHOD: readAllJsonFile
  * This method is being called at readJsonFromUrl, accepts data from BufferedREader 
  * and read all the contents of the JSON API and return the acquired information

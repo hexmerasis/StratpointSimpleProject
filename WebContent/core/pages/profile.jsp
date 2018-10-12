@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-6 col-md-2" style="background-color: #ccffff;"></div>
-	<div class="col-6 col-md-8" style="background-color: #d9ffb3;">
+	<div class="col-6 col-md-8" style="background-color: lavender;">
 		<hr>
 		<h1>Profile</h1>
 		<hr>

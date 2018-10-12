@@ -22,7 +22,7 @@
 	<div id="tableContainer">
 		<div class="row">
 			<div class="col-6 col-md-3" style="background-color: #ccffff;"></div>
-			<div class="col-6 col-md-6" style="background-color: #d9ffb3;">
+			<div class="col-6 col-md-6" style="background-color: lavender;">
 				<div class="container">
 					<div class="table-responsive">
 						<hr>
@@ -46,6 +46,14 @@
 	</div>
 </body>
 <script>	
+/*****ERROR HANDLING ****************
+Display that there is an error fetching the datas in the 
+profile list JSON API server 
+*/
+var error = "<h1 align = \"center\">"+'${SystemError}'+ "</h1>";
+if(error!=""){
+	$("tableContainer").insert(error);
+}
 /***** JSON.PARSE and INSERT*********
 -Parse the data received from servlet to javascript object
 -Loops the javascript object to its length a
